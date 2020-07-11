@@ -76,11 +76,7 @@ WSGI_APPLICATION = 'footballelo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jom9',
-        'HOST': 'sql.njit.edu',
-        'USER': 'jom9',
-        'PASSWORD' : 'G0donlyknows!'
+        'ENGINE': 'django.db.backends.mysql'
     }
 }
 
