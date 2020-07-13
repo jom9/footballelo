@@ -1,0 +1,71 @@
+.site-content{
+  background-color: #2F4F4F;
+}
+.site-banner{
+  background-color: #264040;
+  align-content: center;
+  text-align: center;
+}
+.banner-text{
+  text-align: center;
+  align-content: center;
+  font-size: 36px;
+  color: white;
+}
+.menu{
+    text-align: center;
+    align-content: center;
+    background-color: #264040;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    color: #fff;
+    clear: both;
+    display: block;
+    width: 100%;
+    margin-bottom: : 20px;
+}
+.menu-item{
+  color: :white;
+  float: none;
+  text-align: center;
+  align-content: center;
+    display: inline-block;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: : 10px;
+}
+.menu-link{
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+.menu-link:hover{
+  color:white;
+  text-decoration: underline;
+}
+.topteams-heading{
+  color: white;
+  text-align: center;
+  align-items: center;
+  text-decoration: underline;
+}
+.topteams{
+  text-align: center;
+  align-items: center;
+  color: white;
+  background-color: 264040;
+  width:270px;
+}
+.team-list{
+  font-size: 16px;
+  color: white;
+  font-weight: normal;
+}

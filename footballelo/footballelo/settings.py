@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'api',
+    'home'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,10 @@ WSGI_APPLICATION = 'footballelo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql'
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS':{
+            'read_default_file':'C:\\Users\\marti\\footballelo\\footballelo\\footballelo\\dbsetting.conf'
+        }
     }
 }
 
@@ -118,4 +122,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#STATIC_URL = 'C:/Users/marti/footballelo/footballelo/api/static/'
+#STATIC_URL = 'C:/Users/marti/footballelo/footballelo/static/'

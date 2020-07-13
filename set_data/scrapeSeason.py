@@ -5,6 +5,7 @@ from bs4 import element
 from bs4 import BeautifulSoup
 from typing import List
 import re
+from unicodedata import normalize
 leagues = {'EPL':1992,'LaLiga':1997,'Bundesliga':1963,'Serie A':1955}
 
 
@@ -40,9 +41,11 @@ def GetTeams(teams: List[element.Tag] )->List[str]: #takes in a soup element tag
             if i==0:
                 continue
             if teams[i].find("th").find("a") is None:
-                teamNames += [teams[i].find("th").text]
+                teamNames += [" ".join( teams[i].find("th").get_text(strip=True).replace('\n','').replace(u'\xa0',u' ').split())]
             else:
-                teamNames += [teams[i].find("th").find("a").text]
+                teamNames += [  " ".join( teams[i].find("th").find("a").get_text(strip=True).replace('\n', '').replace(u'\xa0',u' ').split())]
+            #\xa0 is caused by an error in 2016 LaLiga!
+        print(teamNames)
         return teamNames
 def BreakDownTable(teams : List[element.Tag] ) -> dict:
     Games = {} # performance by dict with keys are the team name and the value is a list of home games
@@ -52,17 +55,18 @@ def BreakDownTable(teams : List[element.Tag] ) -> dict:
             continue
 
         if teams[i].find("th").find("a") is None:
-            teamName = teams[i].find("th").text
+            teamName = " ".join( teams[i].find("th").get_text(strip=True).replace('\n','').replace(u'\xa0',u' ').split())
         else:
-            teamName = teams[i].find("th").find("a").text # get the team name
+            teamName = " ".join(teams[i].find("th").find("a").get_text(strip=True).replace('\n', '').replace(u'\xa0',u' ').split())# get the team name
         Games[teamName] = []# make a list of all the games played at home
         j=0
         for game in teams[i].find_all('td'):
-            if re.compile("\d+").match(game.text):
-                awayTeam = teamNames[j]
+            if re.compile("\d+").match(game.text.replace('\n', '')):
+                awayTeam = teamNames[j].replace('\n', '')
                 res = ''.join(c for c in game.text[:-1] if c.isdigit() or c=='–')
                 Games[teamName] += [(res,awayTeam)]# added with score string then away team
             j+=1
+
     return Games
 def GetGames(league,season):
     targetLeague = league
@@ -71,8 +75,9 @@ def GetGames(league,season):
 
     soup = BeautifulSoup(page.content, 'html.parser')
     table = soup.find("table", class_="wikitable plainrowheaders")
-
-    return BreakDownTable(table.find_all('tr') )
+    L = BreakDownTable(table.find_all('tr') )
+    #print(L)
+    return L
 if __name__ == "__main__":
     targetLeague = sys.argv[1]
     targetSeason = int(sys.argv[2])

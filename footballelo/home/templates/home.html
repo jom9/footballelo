@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+  <div class='topteams'>
+    <h2 style="color=white;">Top Teams</h2>
+  <table>
+    <tbody style="font-size= 20px; color=white;">
+      <tr>
+        <th class="team-list">Team</th><td></td><td class="team-list">Elo</td>
+      </tr>
+  {% for team,elo,league in topteams %}
+
+       <tr> <th class="team-list">{{ team }}</th>
+         <td><img class="team-list" src="static/{{league}}"></td>
+         <td class="team-list">{{elo}}</td>
+       </tr>
+  {% endfor %}
+  </tbody>
+  </table>
+  </div>
+{% endblock %}

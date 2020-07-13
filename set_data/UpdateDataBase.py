@@ -1,4 +1,4 @@
-from MySQLdb import _mysql
+import MySQLdb
 import sys
 import scrapeSeason
 from datetime import datetime
@@ -6,29 +6,35 @@ import requests
 def AddSeason(league: str,year: int, db)->None:
     data = scrapeSeason.GetGames(league,year)
     teams = {}
-
+    c=db.cursor()
     print(league,year)
     for team in data.keys():
-        db.query("SELECT elo FROM teams WHERE name=\""+ team+"\" AND league=\""+league+"\"")
-        result = db.store_result()
-        #print(result.fetch_row())
-        if result.fetch_row() != ():
+        c.execute("SELECT elo FROM teams WHERE name=\""+ team+"\" AND league=\""+league+"\"")
+        result = None
+        result = c.fetchone()
+        #print(result,team)
+        if result is not None:
             #print(result.fetch_row())
-            teams[team] =  int(result.fetch_row()[0][0])
+            teams[team] =  int(result[0])
         else:
             teams[team] = 1500
     for homeTeam in data.keys():
 
         for game in data[homeTeam]:
             awayTeam = game[1]
-            awayElo = teams[awayTeam]
+            try:
+                awayElo = teams[awayTeam]
+            except:
+                print(teams)
             homeElo = teams[homeTeam]
             matchResult = game[0]
             scoreHome = int(matchResult.split('–')[0])
             scoreAway = int(matchResult.split('–')[1])
             insertVal = '(\''+str(year)+'\',\''+homeTeam+'\',\''+awayTeam+'\',\''+str(homeElo)+'\',\''+str(awayElo)+'\',\''+str(scoreHome)+'-'+str(scoreAway)+'\')'
-            #print("INSERT INTO games (date,team1,team2,elo1,elo2,result) VALUES"+insertVal)
-            db.query("INSERT INTO games (date,team1,team2,elo1,elo2,result) VALUES"+insertVal)
+
+            c= db.cursor()
+            c.execute("INSERT INTO games (date,team1,team2,elo1,elo2,result) VALUES"+insertVal)
+            db.commit()
             #formulation for elo at http://eloratings.net/about
             # We is expected results, dr is difference in scroe
             dr = homeElo - awayElo
@@ -57,26 +63,25 @@ def AddSeason(league: str,year: int, db)->None:
 
 
     for team in teams:
-        db.query("SELECT elo FROM teams WHERE name=\""+ team+"\" AND league=\""+league+"\"")
-        result = db.store_result()
-        if result.fetch_row() != ():
-            db.query("UPDATE teams SET elo=\'"+str(teams[team])+"\' WHERE name=\'"+team+"\'")
+        c.execute("SELECT elo FROM teams WHERE name=\""+ team+"\" AND league=\""+league+"\"")
+        result = None
+        result = c.fetchone()
+        #print(result)
+        if result is not None:
+            c.execute("UPDATE teams SET elo=\'"+str(teams[team])+"\' WHERE name=\'"+team+"\'")
+            db.commit()
         else:
-            db.query("INSERT INTO teams (name,elo,league) VALUES(\'"+team+'\',\''+ str(teams[team])+'\',\''+ league+  "\')")
-
+            c.execute("INSERT INTO teams (name,elo,league) VALUES(\'"+team+'\',\''+ str(teams[team])+'\',\''+ league+  "\')")
+            db.commit()
 if __name__=="__main__":
-    '''
+
     hst = input("Enter the host URL:")
     usernme = input("Enter the Username:")
     password = input("Enter password:")
     dbnme = input("Enter the database name?")
     '''
-    hst = 'sql.njit.edu'
-    usernme = 'jom9'
-    password = 'G0donlyknows!'
-    dbnme = 'jom9'
-    db=_mysql.connect(host=hst,user=usernme,passwd=password,db=dbnme)
-
+    
+    '''
 
     while True:
         league = input("Enter the league you wish to add. Enter ALL if you wish to get all available leagues. Enter HELP to get list of all leagues")
