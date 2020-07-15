@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class='text-box'>
+  <div class='text-content'>
+  <h3><u>API</u></h3>
+  <p >
+    You can access this data too! The location of the API is at {{ request.get_host }}/api. Send a POST
+    request with fields team will return a JSON of the elo rating. A POST request to
+    {{ request.get_host }}/getGames will get you all the games played by that team. Enjoy! (There is a limit
+    on the number of requests) 
+  </p>
+  </div>
+</div>
+{% endblock %}

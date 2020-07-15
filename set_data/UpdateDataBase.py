@@ -17,7 +17,7 @@ def AddSeason(league: str,year: int, db)->None:
             #print(result.fetch_row())
             teams[team] =  int(result[0])
         else:
-            teams[team] = 1500
+            teams[team] = 1600
     for homeTeam in data.keys():
 
         for game in data[homeTeam]:
@@ -39,14 +39,14 @@ def AddSeason(league: str,year: int, db)->None:
             # We is expected results, dr is difference in scroe
             dr = homeElo - awayElo
             We =  1.0/(10**(-(dr+100)/400) + 1)
-            K = 40
+            K = 30
             if scoreHome>scoreAway:#win
                 W = 1.0
                 if abs(scoreHome-scoreAway) ==1:
                     K=K
                 elif abs(scoreHome-scoreAway) ==2:
                     K *= 1.5
-                elif abs(scoreHome-scoreAway ==3):
+                elif abs(scoreHome-scoreAway) ==3:
                     K*= 1.75
                 else:
                     K += K*(.75+abs(scoreHome-scoreAway)-3)/8
@@ -80,9 +80,9 @@ if __name__=="__main__":
     password = input("Enter password:")
     dbnme = input("Enter the database name?")
     '''
-    
-    '''
 
+    '''
+    db = MySQLdb.connect(hst,usernme,password,dbnme,charset='utf8' )
     while True:
         league = input("Enter the league you wish to add. Enter ALL if you wish to get all available leagues. Enter HELP to get list of all leagues")
         year = input("Enter the year you wish to add. Enter ALL if you wish to get data from every season")

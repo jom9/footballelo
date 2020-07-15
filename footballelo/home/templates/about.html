@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class='text-box'>
+  <div class='text-content'>
+  <h3><u>About</u></h3>
+  <p >
+    This site is based of the ELO system developed by Dr.Arpad. This
+    is the system used in chess. A modified version is used here for the top
+    football clubs of Europe.
+  </p>
+  <p >
+    Here's rating based on the following formula's<br/>
+    R<sub>n</sub>=R<sub>0</sub>+K×(W-W<sub>e</sub>)<br/><br/>
+    Where R<sub>n</sub> is the new rating, R<sub>0</sub> is the old ratings.
+    K is the weighting constant, here league matches are weighted at 30.
+    W is the result, with wins being worth 1.0, draws are worth 0.5, and losses are worth 0.0
+    . W<sub>E</sub> is the expected results. Its calculated with 1/(10<sup>-dr/400</sup>+1).
+    dr is the difference of ELO ratings.
+  </p>
+  </div>
+</div>
+{% endblock %}

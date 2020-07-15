@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from typing import List
 import re
 from unicodedata import normalize
-leagues = {'EPL':1992,'LaLiga':1997,'Bundesliga':1963,'Serie A':1955}
+leagues = {'EPL':2000,'LaLiga':2000,'Bundesliga':2000,'Serie A':2000}
 
 
 
